@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Speed Gauge</title>
+    <script src="d3.js"></script>
+</head>
+<body>
+<script>
+        var svg = d3.select("body").append("svg")
+            .attr("width", 200)
+            .attr("height", 200);
+
+        var arc = d3.arc()
+            .innerRadius(80)
+            .outerRadius(100)
+            .startAngle(-Math.PI / 2)
+            .endAngle(Math.PI / 2);
+
+        svg.append("path")
+            .datum({ endAngle: Math.PI / 2 })
+            .style("fill", "#ddd")
+            .attr("d", arc);
+
+        var value = svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("y", 10)
+            .text("0");
+
+        function update(speed) {
+            var angle = Math.PI / 2 - speed / 100 * Math.PI;
+            svg.select("path")
+                .datum({ endAngle: angle })
+                .transition()
+                .duration(500)
+                .attr("d", arc);
+
+            value.text(speed.toFixed(0));
+        }
+
+
+        update(0);
+    </script>
+</body>
+</html>
